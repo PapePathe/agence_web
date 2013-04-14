@@ -23,7 +23,7 @@ include 'agence_web_clients.permissions';
  */
 function agence_web_clients_menu() {
   
-    $items = array();
+  $items = array();
 
   $items['admin/agence-web/clients'] = array (
     'title'            => t('Clients'),
@@ -36,35 +36,38 @@ function agence_web_clients_menu() {
 
 
   $items['admin/agence-web/clients/nouveau'] = array (
-    'title' => t('nouveau client'),
-    'description' => t('Créer un client'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('agence_web_clients_formulaire_creation'),
-      'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT),
-      'type' => MENU_LOCAL_ACTION,
-        'file path' => drupal_get_path('module', 'agence_web')
+    'title'            => t('nouveau client'),
+    'description'      => t('Créer un client'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('agence_web_clients_formulaire_creation'),
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT),
+    'type'             => MENU_LOCAL_ACTION,
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients')
   );
 
   $items['admin/agence-web/clients/clients-a-recouvrer'] = array (
-    'title' => t('Clients à recouvrer'),
-    'description' => t('Voir les clients à recouvrer'),
-    'page callback' => 'agence_web_clients_a_recouvrer',
-      'access arguments' => array ('view clients to bill'),
-      'type' => MENU_LOCAL_ACTION,
-        'file path' => drupal_get_path('module', 'agence_web')
+    'title'            => t('Clients à recouvrer'),
+    'description'      => t('Voir les clients à recouvrer'),
+    'page callback'    => 'agence_web_clients_a_recouvrer',
+    'access arguments' => array ('view clients to bill'),
+    'type'             => MENU_LOCAL_ACTION,
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients')
   );
 
   /**
    * élement de menu pour configurer le module agence_web_clients
    */
   $items['admin/config/system/agence-web-clients'] = array (
-    'title' => t('Clients Agence Web'),
-    'description' => t('Configurez les clients de votre agence web'),
-    'page callback' => 'agence_web_config_clients',
-      'access arguments' => array ('configure agence web')
+    'title'            => t('Clients Agence Web'),
+    'description'      => t('Configurez les clients de votre agence web'),
+    'page callback'    => 'agence_web_config_clients',
+    'access arguments' => array ('configure agence web')
   );
 
   return $items;
+
 }
 
 
@@ -93,107 +96,6 @@ function agence_web_clients_permission() {
 }
 
 
-/**
- * Page d'accueil de la gestion des clients
- * 
- * Selectionne les clients depuis la base, et les affiche 
- * sous forme tabulée avec pagination s'il y a lieu.
- *
- * @see agence_web_clients_menu()
- * 
- * @return array 
- * Un tableau associatif themé avec la fonction theme_table().
- *  
- */
-function agence_web_gestion_clients() {
-
-  $header = array
-  (
-    array('data' => t('raison sociale'), 'field' => 'c.raison_sociale'),
-    array('data' => t('ninéa'), 'field' => 'c.ninea'),
-    array('data' => t('n° registre de commerce'), 'field' => 'c.rc'),
-    array('data' => t('actions'), 'colspan' => '3')
-  );
-
-  /**
-   * On crée un objet requete
-   * 
-   * Celui étend les classes de pagination et de tri de Drupal
-   */ 
-  $requete  = db_select('agence_web_clients', 'c')->extend('Tablesort')->extend('PagerDefault');
-
-  /**
-   * On selectionne les champs à afficher
-   */ 
-  $requete->fields('c', array('raison_sociale', 'ninea', 'rc', 'id'));
-
-  /**
-   * On inclue les critéres de tri renseignés par l'utilisateur sinon les défauts.
-   */ 
-  $resultat = $requete
-                ->orderByHeader($header)
-                ->limit(15)
-                ->execute();  
-
-  $lignes = array();
-  
-  foreach ($resultat as $ligne) {
-
-    /**
-     * Création des liens vers le contenu et les actions qui y sont associées
-     *   -- affichage
-     *   -- edition
-     *   -- suppression
-     */ 
-    $ligne->lien_afficher = l( t('afficher'),  '/agence-web/clients/'. $ligne->id );
-    $ligne->lien_modifier = l( t('modifier'),  '/agence-web/clients/'. $ligne->id .'/modifier' );
-    $ligne->lien_supprimer= l( t('supprimer'), '/agence-web/clients/'. $ligne->id .'/supprimer' );
-
-    /**
-     * On supprime le champ id du résultat et ainsi il n'est pas affiché.
-     * On en avait juste besoin pour pouvoir afficher des liens vers le contenu.
-     */
-    unset($ligne->id);  
-
-    /**
-     * On ajoute la ligne courante dans le tableau à afficher.
-     */ 
-    $lignes[] = array('data' => (array) $ligne);
-  }
-
-  /**
-   * On crée un tableau de rendu
-   */ 
-  $table['pager_table'] = array ( 
-    '#theme'   => 'table',
-    '#header' => $header, 
-    '#rows'   => $lignes
-  );
-
-  $table['pager'] = array('#theme' => 'pager');
-
-  return $table;
-  
-}
-
-/**
- * Page qui affiche les clients à recouvrer
- * 
- * @return array un tableau asscociatif
- * 
- */
-function agence_web_clients_a_recouvrer() {
-  $header = array
-  (
-    t('raison sociale'), 
-    t('date échéance'), 
-    t('montant restant à recouver'),
-  );
-
-  $table = theme('table', array('header' => $header, 'rows' => array()));
-
-  return $table;
-}
 
 /**
  * Configuration du module agence_web_clients
@@ -212,137 +114,6 @@ function agence_web_config_clients() {
 
 }
 
-/**
- * Formulaire de création dun client 
- * 
- * Dans ce formulaire, nous allons ajouter tous les champs contenant des renseignements de 
- * la table sociétés.
- * 
- * @param  array $form       
- *   Le formulaire un tableau asociatif contenant les champs à  rajouter dans le formulaire
- *   mais aussi avec pour chaque chaque champ ses parametres qui lui sont propres
- * 
- * @param  array $form_state 
- *   Le formulaire avec les données
- * 
- * @return array $form           
- *   Un tableau associatif contenant le formulaire, ses attributs et ses champs
- */
-function agence_web_clients_formulaire_creation($form, &$form_state) {
-  $form = array();
 
-  $form['tabs'] = array(
-    '#type'       => 'vertical_tabs',
-    '#title'      => t('Créer un nouveau client pour votre agence web')
-  );
-
-  /**
-   * Groupe de champs avec les informations légales
-   */ 
-
-  $form['tabs']['legal'] = array(
-    '#type'       => 'fieldset',
-    '#title'      => t('Informations légales'),
-    '#required'   => true
-  );
-
-
-  $form['tabs']['legal']['ninea'] = array(
-    '#type'        => 'textfield',
-    '#title'       => t('ninéa'),
-    '#description' => t('le numéro identification national des entreprises et des associations.'),
-    '#required'    => true
-  );
-
-
-  $form['tabs']['legal']['rc'] = array(
-    '#type'        => 'textfield',
-    '#title'       => t('numéro de registre de commerce (RC)'),
-    '#description' => t('le numéro identification au registre de commerce.'),
-    '#required'    => true
-  );
-
-
-  /**
-   * Groupe de champs concernant les infos de base de la société
-   */
-  $form['tabs']['client'] = array(
-    '#type'       => 'fieldset',
-    '#title'      => t('Informations sociales')
-  );
-
-  $form['tabs']['client']['raison_sociale'] = array(
-    '#type'        => 'textfield',
-    '#title'       => t('raison sociale'),
-    '#description' => t('Quel est la dénomination du client.'),
-    '#required'    => true
-  );
-
-
-  $form['tabs']['client']['capital_social'] = array(
-    '#type'        => 'textfield',
-    '#title'       => t('le capital social'),
-    '#description' => t('le patrimoine de la société. Distinct de celui des associés.'),
-    '#required'    => false
-  );
-
-  $form['tabs']['client']['siege_social'] = array(
-    '#type'        => 'textarea',
-    '#title'       => t('le siège social'),
-    '#description' => t('fournir ici une adresse pour le client.'),
-    '#required'    => true
-  );
-
-  $form['tabs']['client']['objet_social'] = array(
-    '#type'        => 'textarea',
-    '#title'       => t('objet social de la société'),
-    '#description' => t('lister les services et produits fournis par cette société.'),
-    '#required'    => true
-  );
-
-
-  /**
-   * Troisiéme groupe avec les informations de contact
-   */  
-  $form['tabs']['contact'] = array(
-    '#type'       => 'fieldset',
-    '#title'      => t('Informations de contact'),
-    '#required'   => true
-  );
-
-  $form['tabs']['contact']['telephone'] = array(
-    '#type'        => 'textfield',
-    '#title'       => t('le numéro de téléphone'),
-    '#description' => t('Le numéro de téléphone offfiel de la société.'),
-    '#required'    => true
-  );
-
-  $form['tabs']['contact']['fax'] = array(
-    '#type'        => 'textfield',
-    '#title'       => t('le numéro de fax'),
-    '#description' => t('Le numéro de fax offfiel de la société.'),
-    '#required'    => false
-  );
-
-
-  // ajout des boutons de contrôle
-  // 
-  $form['buttons']['submit'] = array(
-    '#type'        => 'submit',
-    '#value'       => t('enregistrer')
-  );
-
-  return $form;
-}
-
-/**
- * Implements hook_validate().
- * 
- */
-function agence_web_clients_formulaire_creation_validate($form, &$form_state, $client) {
-
-
-
-}
 
 

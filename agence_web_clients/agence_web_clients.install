@@ -54,6 +54,19 @@ function agence_web_clients_schema() {
           'not null' => TRUE
         ),
 
+        'capital_social' => array(
+          'description' => 'le capital social de notre entreprise.',
+          'type' => 'int',
+          'length' => '255',
+          'not null' => FALSE
+        ),
+
+        'objet_social' => array(
+          'description' => 'objet social ou coeur de métier.',
+          'type' => 'text',
+          'not null' => TRUE
+        ),
+
         'telephone' => array(
           'description' => 'le numéro officiel de la société.',
           'type' => 'varchar',
@@ -63,6 +76,13 @@ function agence_web_clients_schema() {
 
         'courriel' => array(
           'description' => 'une adresse de courriel.',
+          'type'        => 'varchar',
+          'length'      => '255',
+          'not null'    => FALSE
+        ),
+
+        'fax' => array(
+          'description' => 'une adresse de fax.',
           'type'        => 'varchar',
           'length'      => '255',
           'not null'    => FALSE
