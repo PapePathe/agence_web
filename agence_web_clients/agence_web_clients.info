@@ -1,0 +1,18 @@
+name           = Agence WEB Clients
+description    = gestion des clients pour agence web
+core           = 7.x
+package        = Xarala
+
+
+files[]        = agence_web_clients.info
+files[]        = agence_web_clients.install
+files[]        = agence_web_clients.module
+files[]        = agence_web_clients.permissions
+files[]        = agence_web_clients.admin.inc
+files[]        = tests/agence_web_clients.test
+
+
+dependencies[] = agence_web
+
+
+configure      = admin/config/system/agence-web-clients

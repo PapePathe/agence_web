@@ -1,0 +1,11 @@
+name = Agence WEB
+description = un gestionnaire de projets pour une agence web.
+core = 7.x
+package = Xarala
+
+
+files[] = core.inc.php
+files[] = agence_web.info
+files[] = agence_web.install
+
+configure = admin/config/system/agence-web

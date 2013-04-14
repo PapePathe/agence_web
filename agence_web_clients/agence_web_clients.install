@@ -1,0 +1,82 @@
+<?php   
+
+/**
+ * Implements hook_schema().
+ */
+function agence_web_clients_schema() {
+  
+  $schema = array();
+
+  /**
+   * Création de la table clients
+   * -------------------------------------------------------------------------------
+   */
+  $schema['agence_web_clients'] = array (
+      'description' => 'Les clients de notre agence web.',
+
+      /** 
+       * définition des colonnes
+       */
+      'fields' => array(
+
+        'id' => array(
+          'description' => 'La cle primaire.',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+
+        'ninea' => array(
+          'description' => 'Le numero d-identification national des entreprises et associations.',
+          'type' => 'varchar',
+          'length' => '30',
+          'not null' => TRUE
+        ),
+
+        'rc' => array(
+          'description' => 'Le numero de registre de commerce.',
+          'type' => 'varchar',
+          'length' => '30',
+          'not null' => TRUE
+        ),
+
+        'raison_sociale' => array(
+          'description' => 'le nom de notre entreprise.',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
+
+        'siege_social' => array(
+          'description' => 'le siége social de notre entreprise.',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
+
+        'telephone' => array(
+          'description' => 'le numéro officiel de la société.',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
+
+        'courriel' => array(
+          'description' => 'une adresse de courriel.',
+          'type'        => 'varchar',
+          'length'      => '255',
+          'not null'    => FALSE
+        ),
+
+      ),
+
+      'primary key' => array('id'),
+      
+      'unique keys'     => array(
+        'ninea' => array('ninea'),
+        'rc'    => array('rc'),
+      )
+  );
+
+  return $schema;
+}

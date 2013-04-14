@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Définition d'une constante pour la permission de gerer les clients 
+ */ 
+define('AGENCE_WEB_CLIENTS_PERMISSION_DE_GERER', 'Administrer les clients');
+
+/**
+ * Définition d'une constante pour la permission de créer des clients 
+ */ 
+define('AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT', 'Créer un client');

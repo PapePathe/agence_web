@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * @file
+ * 	Fichier principal du module Agence WEB clients devel
+ * 
+ * @author
+ *  Papa Pathe SENE
+ * 
+ * @copyright
+ *  Xarala
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function agence_web_clients_devel_permission() {
+  return array(
+    'Ajouter des enregistrements clients pour le développment' =>  array(
+      'title' => t('Remplit la base de clients'),
+      'description' => t('Ajouter des enregistrements clients fakes dans la base pour accélerer le développment du module.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function agence_web_clients_devel_menu() {
+
+  $items['admin/config/development/agence-web/clients/remplir'] = array(
+    'title'            => t('Générer des clients'),
+    'description'      => t('Ajouter des clients dans la base avec des valeurs générées aléatoirement.'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('agence_web_clients_devel_formulaire_ajout_clients'),
+    'access arguments' => array('Ajouter des enregistrements clients pour le développment'),
+  );
+
+  return $items;
+}
+
+/**
+ * Crée un formulaire permettant d'ajouter des clients en masse dans la base
+ * 
+ * @return Array $form
+ *  Un tableau associatif contenant tous les champs du formulaire et leurs attributs
+ */ 
+function agence_web_clients_devel_formulaire_ajout_clients()
+{
+  
+  $form = array();
+
+  $form['nombre_de_clients'] = array(
+    '#type'        => 'textfield',
+    '#title'       => t('Générer combien de clients?'),
+    '#description' => t('Saisissez ici le nombre maximal de clients à ajouter dans la base. La valeur saisie ici doit être numérique.'),
+    '#required'    => true
+  );
+
+  $form['buttons']['submit'] = array(
+    '#type'        => 'submit',
+    '#value'       => t('générer')
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_validate().
+ */
+function agence_web_clients_devel_formulaire_ajout_clients_validate($form, &$form_state) {
+  
+  /**
+   * Si le champ nombre_de_clients n'est pas un nombre on indique à l'utilisateur qu'il y a une erreur de
+   * validation et on lui propose de corriger sa faute.
+   */ 
+  if ( isset($form_state['values']['nombre_de_clients']) && !is_numeric($form_state['values']['nombre_de_clients']) ) {
+    form_set_error('nombre_de_clients', t("le nombre de clients donné n'est pas un numérique."));
+  }
+
+}
+
+/**
+ * Implements hook_views_form_submit().
+ */
+function agence_web_clients_devel_formulaire_ajout_clients_submit($form, &$form_state) {
+  
+  /**
+   * On crée la requete permettant l'ajout des clients dans la base 
+   */ 
+  $requete_creation = db_insert('agence_web_clients');
+  $requete_creation->fields( array('ninea', 'rc', 'raison_sociale', 'siege_social', 'telephone') );
+
+  for ($i=0; $i < $form_state['values']['nombre_de_clients']; $i++) { 
+    $requete_creation->values(
+      array(
+        'ninea' =>  'ninea '. rand(1000, 4000). '-' .$i,
+        'rc' => 'rc '. rand(1000, 4000). '-' .$i,
+        'raison_sociale' => 'test',
+        'siege_social' => 'test',
+        'telephone' => 'test',
+      )
+    );
+  }
+
+  /**
+   * On éxécute la requete
+   */ 
+  $requete_creation->execute();
+
+  /**
+   * Redirection et affichage d'un message de notification
+   */ 
+  drupal_set_message(t('le clients ont été ajoutés avec succès.'));
+
+  $form_state['redirect'] = 'admin/agence-web/clients';
+
+}
