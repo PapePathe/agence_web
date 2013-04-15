@@ -256,6 +256,53 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
  * 
  */
 function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
+
+  /**
+   * Validation du NINEA
+   * 
+   * Le ninea est compose de 3 à 7 chiffres
+   */
+  if (0 == preg_match('/^\d{3,7}$/', $form_state['values']['ninea'])) {
+    form_set_error('ninea', "Ce ninéa n'est pas valide!");
+  }
+
+  /**
+   * Validation du RC
+   * 
+   * Exemple de RC valide
+   *   SN DKR 2216 B 9989
+   */ 
+  if (0 == preg_match('/^SN DKR \d{4} [A-Z]{1} \d{4}$/', $form_state['values']['rc'])) {
+    form_set_error('rc', "Ce numéro de RC n'est pas valide!");
+  }
+
+  /**
+   * Validation du champ capital social s'il est renseigné par l'utilisateur
+   * 
+   */ 
+  if (!empty($form_state['values']['capital_social'])) {
+
+    if (!is_numeric($form_state['values']['capital_social'])) { // le capital social est un nombre
+      form_set_error('capital_social', "Le capital social n'est pas un numérique.");
+    }
+
+    if ($form_state['values']['capital_social'] < 500000) { // le capital social admet une valeur minimale
+      form_set_error('capital_social', "le capital social doit être supérieur à 500000");
+    }
+
+  }
+
+  /**
+   * Validation du numéro de téléphone
+   * 
+   * Les numéros de téléphones sont composés du préfixe opérateur
+   * suivi de sept chiffres décimaux sans espaces.
+   * 
+   */ 
+  if (0 == preg_match('/^(33|70|76|77|78)\d{7}$/', $form_state['values']['telephone'])) {
+    form_set_error('telephone', "Ce numéro de téléphone n'est pas valide!");
+  }
+
 }
 
 
