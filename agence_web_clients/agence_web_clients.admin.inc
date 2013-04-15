@@ -13,6 +13,7 @@
  *  
  * @copyright
  * 	Xarala  
+ * @link http://www.xarala.sn
  * 
  * 
  */
@@ -25,7 +26,7 @@
  *
  * @see agence_web_clients_menu()
  * 
- * @return array 
+ * @return  
  * Un tableau associatif themé avec la fonction theme_table().
  *  
  */
@@ -102,15 +103,12 @@ function agence_web_gestion_clients() {
 }
 
 
-
-
-
 /**
  * Page qui affiche les clients à recouvrer
  * 
  * @return array 
- * Un tableau asscociatif affecté du theme par défaut pour drupal 
- * pour les tableaux.
+ *   Un tableau asscociatif affecté du theme par défaut pour drupal 
+ *   pour les tableaux.
  * 
  */
 function agence_web_clients_a_recouvrer() {
@@ -133,14 +131,14 @@ function agence_web_clients_a_recouvrer() {
  * Dans ce formulaire, nous allons ajouter tous les champs contenant des renseignements de 
  * la table sociétés.
  * 
- * @param  array $form       
+ * @param $form       
  *   Le formulaire un tableau asociatif contenant les champs à  rajouter dans le formulaire
  *   mais aussi avec pour chaque chaque champ ses parametres qui lui sont propres
  * 
- * @param  array $form_state 
+ * @param  $form_state 
  *   Le formulaire avec les données
  * 
- * @return array $form           
+ * @return           
  *   Un tableau associatif contenant le formulaire, ses attributs et ses champs
  */
 function agence_web_clients_formulaire_creation($form, &$form_state) {
@@ -161,7 +159,6 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#required'   => true
   );
 
-
   $form['tabs']['legal']['ninea'] = array(
     '#type'        => 'textfield',
     '#title'       => t('ninéa'),
@@ -170,14 +167,12 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#default'     => isset($form_state['values']['ninea']) ? $form_state['values']['ninea'] : ''
   );
 
-
   $form['tabs']['legal']['rc'] = array(
     '#type'        => 'textfield',
     '#title'       => t('numéro de registre de commerce (RC)'),
     '#description' => t('le numéro identification au registre de commerce.'),
     '#required'    => true
   );
-
 
   /**
    * Groupe de champs concernant les infos de base de la société
@@ -199,7 +194,8 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#type'        => 'textfield',
     '#title'       => t('le capital social'),
     '#description' => t('le patrimoine de la société. Distinct de celui des associés.'),
-    '#required'    => false
+    '#required'    => false,
+    '#default_value'     => !empty($form_state['values']['capital_social']) ? $form_state['values']['capital_social'] : 0
   );
 
   $form['tabs']['client']['siege_social'] = array(
@@ -215,7 +211,6 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#description' => t('lister les services et produits fournis par cette société.'),
     '#required'    => true
   );
-
 
   /**
    * Troisiéme groupe avec les informations de contact
@@ -240,7 +235,6 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#required'    => false
   );
 
-
   // ajout des boutons de contrôle
   // 
   $form['buttons']['submit'] = array(
@@ -261,10 +255,16 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
    * Validation du NINEA
    * 
    * Le ninea est compose de 3 à 7 chiffres
+   * Il est unique dans la table client
    */
   if (0 == preg_match('/^\d{3,7}$/', $form_state['values']['ninea'])) {
     form_set_error('ninea', "Ce ninéa n'est pas valide!");
   }
+  
+  // On vérifie l'unicité de ce ninéa
+  _valeur_existe_dans_la_table('agence_web_clients', 'ninea', $form_state['values']['ninea']);
+
+  // FIN VALIDATION NINEA --------------------------------------------------------------------
 
   /**
    * Validation du RC
@@ -275,6 +275,12 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
   if (0 == preg_match('/^SN DKR \d{4} [A-Z]{1} \d{4}$/', $form_state['values']['rc'])) {
     form_set_error('rc', "Ce numéro de RC n'est pas valide!");
   }
+
+  // on vérifie l'unicité de ce RC
+  _valeur_existe_dans_la_table('agence_web_clients', 'rc', $form_state['values']['rc']);
+
+  // FIN VALIDATION RC -----------------------------------------------------------------------
+  
 
   /**
    * Validation du champ capital social s'il est renseigné par l'utilisateur
@@ -305,6 +311,10 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
     form_set_error('telephone', "Ce numéro de téléphone n'est pas valide!");
   }
 
+  _valeur_existe_dans_la_table('agence_web_clients', 'telephone', $form_state['values']['telephone']);
+
+  // FIN VALIDATION TELEPHONE -----------------------------------------------------------
+
 }
 
 
@@ -319,7 +329,7 @@ function agence_web_clients_formulaire_creation_submit($form, &$form_state) {
 	  	'ninea'          => $form_state['values']['ninea'],
 	  	'rc'             => $form_state['values']['rc'],
 	  	'raison_sociale' => $form_state['values']['raison_sociale'],
-	  	'capital_social' => $form_state['values']['capital_social'],
+	  	'capital_social' => isset($form_state['values']['capital_social']) ? $form_state['values']['capital_social'] : 0,
 	  	'siege_social'   => $form_state['values']['siege_social'],
 	  	'objet_social'   => $form_state['values']['objet_social'],
 	  	'telephone'      => $form_state['values']['telephone'   ],
@@ -342,7 +352,9 @@ function agence_web_clients_formulaire_creation_submit($form, &$form_state) {
 
 /**
  * Configuration du module agence_web_clients
- * @return array un tableau associatif contenant les champs d'un formulaire
+ * 
+ * @return  
+ *   un tableau associatif contenant les champs d'un formulaire
  * 
  */
 function agence_web_clients_formulaire_configuration() {
@@ -359,3 +371,37 @@ function agence_web_clients_formulaire_configuration() {
 
 }
 
+
+/**
+ * Cette fonction vérifie une contrainte d'unicité dans la table
+ *  
+ * La fonction vérifie dans la table donnée en argument que
+ * $value n'existe pas encore pour le champ $field.
+ * 
+ * @param $table
+ *   La table où vérifier la contrainte d'unicité
+ * 
+ * @param $field
+ *   Le champ à vérifier
+ * 
+ * @param $value
+ *   La valeur à chercher dans la table
+ */
+function _valeur_existe_dans_la_table($table, $field, $value)
+{
+
+  $requete  = db_select($table, 'c');
+
+  $resultat = $requete
+                ->fields('c', array($field))
+                ->condition("c.$field", $value)
+                ->execute();
+  /**
+   * Si le nombre de lignes retourné par la requête est différent de zéro
+   * On ajoute une notification d'erreur dans le formulaire.
+   */ 
+  if(count($resultat->fetchAll()) != 0) { 
+    form_set_error($field, "Ce $field existe déjà dans la table.");
+  }
+
+}

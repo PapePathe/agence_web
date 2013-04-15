@@ -21,57 +21,59 @@ function agence_web_clients_schema() {
 
         'id' => array(
           'description' => 'La cle primaire.',
-          'type' => 'serial',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
+          'type'        => 'serial',
+          'unsigned'    => TRUE,
+          'not null'    => TRUE,
         ),
 
         'ninea' => array(
           'description' => 'Le numero d-identification national des entreprises et associations.',
-          'type' => 'varchar',
-          'length' => '30',
-          'not null' => TRUE
+          'type'        => 'varchar',
+          'length'      => '30',
+          'not null'    => TRUE
         ),
 
         'rc' => array(
           'description' => 'Le numero de registre de commerce.',
-          'type' => 'varchar',
-          'length' => '30',
-          'not null' => TRUE
+          'type'        => 'varchar',
+          'length'      => '30',
+          'not null'    => TRUE
         ),
 
         'raison_sociale' => array(
           'description' => 'le nom de notre entreprise.',
-          'type' => 'varchar',
-          'length' => '255',
-          'not null' => TRUE
+          'type'        => 'varchar',
+          'length'      => '255',
+          'not null'    => TRUE
         ),
 
         'siege_social' => array(
           'description' => 'le siége social de notre entreprise.',
-          'type' => 'varchar',
-          'length' => '255',
-          'not null' => TRUE
+          'type'        => 'varchar',
+          'length'      => '255',
+          'not null'    => TRUE
         ),
 
         'capital_social' => array(
           'description' => 'le capital social de notre entreprise.',
-          'type' => 'int',
-          'length' => '255',
-          'not null' => FALSE
+          'type'        => 'int',
+          'size'        => 'big',
+          'unsigned'    => TRUE,
+          'default'     => 0,
+          'not null'    => FALSE
         ),
 
         'objet_social' => array(
           'description' => 'objet social ou coeur de métier.',
-          'type' => 'text',
-          'not null' => TRUE
+          'type'        => 'text',
+          'not null'    => TRUE
         ),
 
         'telephone' => array(
           'description' => 'le numéro officiel de la société.',
-          'type' => 'varchar',
-          'length' => '255',
-          'not null' => TRUE
+          'type'        => 'varchar',
+          'length'      => '255',
+          'not null'    => TRUE
         ),
 
         'courriel' => array(
@@ -92,7 +94,7 @@ function agence_web_clients_schema() {
 
       'primary key' => array('id'),
       
-      'unique keys'     => array(
+      'unique keys' => array(
         'ninea' => array('ninea'),
         'rc'    => array('rc'),
       )
