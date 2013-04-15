@@ -62,8 +62,11 @@ function agence_web_clients_menu() {
   $items['admin/config/system/agence-web-clients'] = array (
     'title'            => t('Clients Agence Web'),
     'description'      => t('Configurez les clients de votre agence web'),
-    'page callback'    => 'agence_web_config_clients',
-    'access arguments' => array ('configure agence web')
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('agence_web_clients_formulaire_configuration'),
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_CONFIGURER),
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients')
   );
 
   return $items;
@@ -90,29 +93,16 @@ function agence_web_clients_permission() {
     AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT => array(
       'title'       => t('créer un client'),
       'description' => t('créer un client pour notre agence web')
-    )
+    ),
+
+    AGENCE_WEB_CLIENTS_PERMISSION_DE_CONFIGURER =>  array( 
+      'title' => t('configurer agence web'),
+      'description' => t('configurer les clients de notre agence web'),
+    ),
 
   );
 }
 
-
-
-/**
- * Configuration du module agence_web_clients
- * @return array un tableau associatif contenant les champs d'un formulaire
- * 
- */
-function agence_web_config_clients() {
-
-  $content =  array (
-    'raw_markup' => array (
-      '#type' => 'markup', 
-      '#content' => '<p>configuration clients agence web</p>'
-    )
-  );
-  return $content;
-
-}
 
 
 

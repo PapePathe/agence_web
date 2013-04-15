@@ -286,8 +286,10 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
       form_set_error('capital_social', "Le capital social n'est pas un numérique.");
     }
 
-    if ($form_state['values']['capital_social'] < 500000) { // le capital social admet une valeur minimale
-      form_set_error('capital_social', "le capital social doit être supérieur à 500000");
+    $capital_social = variable_get('agence_web_clients_capital_social_minimum');
+
+    if ($form_state['values']['capital_social'] < $capital_social) { // le capital social admet une valeur minimale
+      form_set_error('capital_social', "le capital social doit être supérieur à $capital_social");
     }
 
   }
@@ -330,5 +332,30 @@ function agence_web_clients_formulaire_creation_submit($form, &$form_state) {
 	$form_state['redirect'] = 'admin/agence-web/clients';
 
 	drupal_set_message(t('la société a été créee avec succès.'));
+}
+
+
+
+/**
+ * CONFICURATIONS----------------------------------------------------------
+ */
+
+/**
+ * Configuration du module agence_web_clients
+ * @return array un tableau associatif contenant les champs d'un formulaire
+ * 
+ */
+function agence_web_clients_formulaire_configuration() {
+
+  $form['agence_web_clients_capital_social_minimum'] = array(    
+    '#type'           => 'textfield',
+    '#title'          => t('le capital social minimum. '),
+    '#description'    => t("Le capital social minimum pour une société de capitaux ou une société d'actions."),
+    '#required'       => true,
+    '#default_value'  => variable_get('agence_web_clients_capital_social_minimum', 1000000)
+  );
+
+  return system_settings_form($form);
+
 }
 
