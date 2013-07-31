@@ -13,6 +13,7 @@
  *  
  * @copyright
  * 	Xarala  
+ * 
  * @link http://www.xarala.sn
  * 
  * 
@@ -70,9 +71,9 @@ function agence_web_gestion_clients() {
      *   -- edition
      *   -- suppression
      */ 
-    $ligne->lien_afficher = l( t('afficher'),  '/agence-web/clients/'. $ligne->id );
-    $ligne->lien_modifier = l( t('modifier'),  '/agence-web/clients/'. $ligne->id .'/modifier' );
-    $ligne->lien_supprimer= l( t('supprimer'), '/agence-web/clients/'. $ligne->id .'/supprimer' );
+    $ligne->lien_afficher = l( t('afficher'),  'admin/agence-web/clients/'. $ligne->id );
+    $ligne->lien_modifier = l( t('modifier'),  'admin/agence-web/clients/'. $ligne->id .'/modifier' );
+    $ligne->lien_supprimer= l( t('supprimer'), 'admin/agence-web/clients/'. $ligne->id .'/supprimer' );
 
     /**
      * On supprime le champ id du résultat et ainsi il n'est pas affiché.
@@ -369,6 +370,19 @@ function agence_web_clients_formulaire_configuration() {
 
   return system_settings_form($form);
 
+}
+
+function agence_web_details_client($id_client = null)
+{
+  
+  $content = array();
+
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => $id_client
+  );
+
+  return $content;
 }
 
 

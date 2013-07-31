@@ -89,7 +89,7 @@ function agence_web_clients_devel_formulaire_ajout_clients_submit($form, &$form_
    * On crée la requete permettant l'ajout des clients dans la base 
    */ 
   $requete_creation = db_insert('agence_web_clients');
-  $requete_creation->fields( array('ninea', 'rc', 'raison_sociale', 'siege_social', 'telephone') );
+  $requete_creation->fields( array('ninea', 'rc', 'raison_sociale', 'siege_social', 'telephone', 'objet_social') );
 
   for ($i=0; $i < $form_state['values']['nombre_de_clients']; $i++) { 
     $requete_creation->values(
@@ -99,6 +99,7 @@ function agence_web_clients_devel_formulaire_ajout_clients_submit($form, &$form_
         'raison_sociale' => 'test',
         'siege_social' => 'test',
         'telephone' => 'test',
+        'objet_social' => 'tegdn'
       )
     );
   }

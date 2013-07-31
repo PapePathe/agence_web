@@ -1,16 +1,17 @@
 <?php
 
 /**
- * Définition d'une constante pour la permission de gerer les clients 
+ * Définition d'une constante pour la permission de 
+ *  gerer les clients 
+ *  créer des clients
+ * 	visualiser les clients
+ *  modifier les clients
+ *  supprimer les clients
+ *  configurer les clients
  */ 
 define('AGENCE_WEB_CLIENTS_PERMISSION_DE_GERER', 'Administrer les clients');
-
-/**
- * Définition d'une constante pour la permission de créer des clients 
- */ 
+define('AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT', 'Visualiser les clients');
+define('AGENCE_WEB_CLIENTS_PERMISSION_DE_MODIFIER_CLIENT', 'Modifier les clients');
+define('AGENCE_WEB_CLIENTS_PERMISSION_DE_SUPPRIMER_CLIENT', 'Supprimer des clients');
 define('AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT', 'Créer un client');
-
-/**
- * Définition d'une constante pour la permission de configurer les clients
- */ 
 define('AGENCE_WEB_CLIENTS_PERMISSION_DE_CONFIGURER', 'Configurer les clients');
