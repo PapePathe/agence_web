@@ -8,4 +8,4 @@ files[] = core.inc.php
 files[] = agence_web.info
 files[] = agence_web.install
 
-configure = admin/config/system/agence-web
+configure = admin/config/agence-web/defauts

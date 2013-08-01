@@ -416,13 +416,22 @@ function agence_web_clients_formulaire_configuration() {
 
 }
 
-function agence_web_details_client($id_client = null) {
+function agence_web_details_client($id_client) {
   
   $content = array();
 
+  $requete = db_select('agence_web_clients', 'c')
+              ->fields('c', array('raison_sociale', 'ninea', 'rc', 'id'))
+              ->condition('c.id', 1);  
+
+  $client  = $requete->execute()->fetchObject();
+
+
+
+
   $content['raw_markup'] = array(
     '#type' => 'markup',
-    '#markup' => $id_client
+    '#markup' => $client->raison_sociale
   );
 
   return $content;

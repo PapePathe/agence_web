@@ -15,4 +15,4 @@ files[]        = tests/agence_web_clients.test
 dependencies[] = agence_web
 
 
-configure      = admin/config/system/agence-web-clients
+configure      = admin/config/agence-web/clients

@@ -46,14 +46,47 @@ function agence_web_clients_menu() {
     'type'             => MENU_DEFAULT_LOCAL_TASK,
   );
 
-  $items['admin/agence-web/clients/%client'] = array(
+  $items['admin/agence-web/clients/%'] = array(
     'title'            => t('Détails du client'),
     'description'      => t('affichage détaillé des clients'),
     'page callback'    => 'agence_web_details_client',
-    'page arguments'   => array('%3'),
+    'page arguments'   => array(3),
     'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT),
     'file'             => 'agence_web_clients.admin.inc',
     'file path'        => drupal_get_path('module', 'agence_web_clients'),
+  );
+
+  $items['admin/agence-web/clients/%/details'] = array(
+    'title'            => t('Détails du client'),
+    'description'      => t('affichage détaillé des clients'),
+    'page callback'    => 'agence_web_details_client',
+    'page arguments'   => array(3),
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT),
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK
+  );
+
+  $items['admin/agence-web/clients/%/modifier'] = array(
+    'title'            => t('modifier'),
+    'description'      => t('modifier ce client'),
+    'page callback'    => 'agence_web_details_client',
+    'page arguments'   => array(3),
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT),
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients'),
+    'type'             => MENU_LOCAL_TASK,
+  );
+
+  $items['admin/agence-web/clients/%/projets'] = array(
+    'title'            => t('projets'),
+    'description'      => t('afficher les projets soumis par ce client'),
+    'page callback'    => 'agence_web_details_client',
+    'page arguments'   => array(3),
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT),
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients'),
+    'type'             => MENU_LOCAL_TASK,
   );
 
   $items['admin/agence-web/clients/nouveau'] = array(
@@ -62,7 +95,7 @@ function agence_web_clients_menu() {
     'page callback'    => 'drupal_get_form',
     'page arguments'   => array('agence_web_clients_formulaire_creation'),
     'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT),
-    'type'             => MENU_LOCAL_TASK | MENU_LOCAL_ACTION,
+    'type'             => MENU_LOCAL_TASK,
     'file'             => 'agence_web_clients.admin.inc',
     'file path'        => drupal_get_path('module', 'agence_web_clients')
   );
@@ -132,6 +165,8 @@ function agence_web_clients_permission() {
 
   );
 }
+
+
 
 
 
