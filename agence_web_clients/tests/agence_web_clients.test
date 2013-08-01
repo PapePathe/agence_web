@@ -6,10 +6,10 @@
  * Tests pour le module agence_web_clients 
  *
  * @author
- * 	Papa Pathe SENE
+ *  Papa Pathe SENE
  *
  * @copyright
- * 	Xarala Web Studios
+ *  Xarala Web Studios
  */
 
 
@@ -20,82 +20,72 @@
  */
 class AgenceWebClientsTestCase extends DrupalWebTestCase {
 
-	/**
-	 * Une variable pour référencer l'utilisateur sous lequel on va tester
-	 * @var Object
-	 * 
-	 */
-	protected $utilisateur;
+  /**
+   * Une variable pour référencer l'utilisateur sous lequel on va tester
+   * @var Object
+   * 
+   */
+  protected $utilisateur;
 
-	/**
-	 * Configure le test
-	 * 
-	 * 	Appelle la même fonction dans la classe parente.
-	 *  Crée une utilisateur avec les priviléges requis.
-	 * 
-	 */
-	public function setUp()
-	{
+  /**
+   * Configure le test
+   * 
+   *  Appelle la même fonction dans la classe parente.
+   *  Crée une utilisateur avec les priviléges requis.
+   * 
+   */
+  public function setUp() {
 
-		// $logfile = conf_path() . '/files/test.log';
-	 //    ini_set('log_errors', 1);
-	 //    ini_set('error_log', $logfile);
+    parent::setUp('agence_web_clients');
 
-	    // $this->profile = 'testing';
+    /**
+     * on crée un utilisateur
+     */
+    $this->utilisateur = $this->drupalCreateuser(
+        array(
+            AGENCE_WEB_CLIENTS_PERMISSION_DE_GERER, 
+            AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT
+        )
+    );
 
+    /**
+     * création d'une session
+     */
+    $this->drupalLogin($this->utilisateur);
 
-		parent::setUp('agence_web_clients');
+  }
 
-		/**
-		 * on crée un utilisateur
-		 */
-		$this->utilisateur = $this->drupalCreateuser(
-			array(
-				AGENCE_WEB_CLIENTS_PERMISSION_DE_GERER, 
-				AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT
-			)
-		);
+  /**
+   * Identifie le test.
+   *
+   * @return 
+   *  Un tableau associatif composé d'un nom, description et groupe pour le test
+   */ 
+  public static function getInfo() {
+    return array(
+        'name' => 'Tests fonctionnels pour le module agence_web_clients.',
+        'description' => 'Une pile de tests fonctionnels pour le module agence_web_clients.',
+        'group' => 'Agence Web'
+    );
+  }
 
-		/**
-		 * création d'une session
-		 */
-		$this->drupalLogin($this->utilisateur);
+  /**
+   * Teste la page d'accueil des clients.
+   * 
+   */
+  public function afficheLienVersNouveauClient() {
 
-	}
+    $this->drupalGet('admin/agence-web/clients');
 
-	/**
-	 * Identifie le test.
-	 *
-	 * @return 
-	 * 	Un tableau associatif composé d'un nom, description et groupe pour le test
-	 */	
-	public static function getInfo() {
-		return array (
-			'name' => 'Tests fonctionnels pour le module agence_web_clients.',
-			'description' => 'Une pile de tests fonctionnels pour le module agence_web_clients.',
-			'group' => 'Agence Web'
-		);
-	}
+    // $this->assertResponse(200);
 
-	/**
-	 * Teste la page d'accueil des clients.
-	 * 
-	 */
-	public function afficheLienVersNouveauClient()
-	{
+    $this->assertLink(t('nouveau client'), 0 , 'il faut ajouter le lien nouveau de client.', 'Agence WEB');
+    $this->assertLinkByHref('admin/agence-web/clients/nouveau', 0 , 'il faut ajouter chemin vers le lien nouveau de client.', 'Agence WEB');
+  }
 
-		$this->drupalGet('admin/agence-web/clients');
-
-		// $this->assertResponse(200);
-
-		$this->assertLink(t('nouveau client'),0 ,'il faut ajouter le lien nouveau de client.', 'Agence WEB');
-		$this->assertLinkByHref('admin/agence-web/clients/nouveau',0 ,'il faut ajouter chemin vers le lien nouveau de client.', 'Agence WEB');
-	}
-
-	public function afficherClientsARecouvrer()
-	{
-		# code...
-	}
+  public function afficherClientsARecouvrer() {
+      # code...
+  }
 
 
 }
