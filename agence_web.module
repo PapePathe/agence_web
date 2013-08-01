@@ -10,106 +10,85 @@
  *  Papa Pathe SENE
  *  
  * @copyright
- * 	Xarala Web Studios
+ *  Xarala Web Studios
  * 
  */
 
 /**
  * Implements hook_menu().
  */
-function agence_web_menu()
-{
+function agence_web_menu() {
 
-	/**
-	 * Declare an array of menu items to load
-	 * @var array
-	 */
-	$items = array ();
-
-
-	$items['admin/agence-web'] = array (
-		'title' => t('Agence WEB'),
-		'description' => t('Manage your web agency: clients, projects, invoices.'),
-		'page callback' => 'agence_web_home_page',
-    	'access arguments' => array ('manage web agency'),
-	    'file' => 'core.inc.php',
-      	'file path' => drupal_get_path('module', 'agence_web')
-	);
-
-	$items['admin/agence-web/accueil'] = array (
-		'title' => t('accueil'),
-		'description' => t('gestion agence web'),
-		'page callback' => 'agence_web_home_page',
-    	'access arguments' => array ('manage agence web clients'),
-	    'file' => 'core.inc.php',
-	    'type' => MENU_DEFAULT_LOCAL_TASK,
-      	'file path' => drupal_get_path('module', 'agence_web')
-	);
-
-	// $items['admin/agence-web/packs'] = array (
-	// 	'title' => t('packs'),
-	// 	'description' => t('gestion des packs'),
-	// 	'page callback' => 'agence_web_gestion_packs',
- //    	'access arguments' => array ('manage agence web packs'),
-	//     'type' => MENU_LOCAL_TASK,
-	//     'file' => 'core.inc.php',
- //      	'file path' => drupal_get_path('module', 'agence_web')
-	// );
-
-	// $items['admin/agence-web/packs/creer'] = array (
-	// 	'title' => t('créer un pack site web'),
-	// 	'description' => t('création de pack'),
- //    	'page callback' => 'drupal_get_form',
- //    	'page arguments' => array ('formulaire_creer_pack'),
- //    	'access arguments' => array ('create agence web packs'),
-	//     'file' => 'core.inc.php',
- //    	'type' => MENU_CALLBACK,
-	// );
-
-	// $items['admin/agence-web/protocoles'] = array (
-	// 	'title' => t('protocoles'),
-	// 	'description' => t('gestion des protocoles'),
-	// 	'page callback' => 'agence_web_gestion_protocoles',
- //    	'access arguments' => array ('manage agence web protocoles'),
-	//     'type' => MENU_LOCAL_TASK,
-	//     'file' => 'core.inc.php',
- //      	'file path' => drupal_get_path('module', 'agence_web')
-	// );
-
-	// $items['admin/agence-web/services'] = array (
-	// 	'title' => t('services'),
-	// 	'description' => t('gestion des services'),
-	// 	'page callback' => 'agence_web_gestion_services',
- //    	'access arguments' => array ('manage agence web services'),
-	//     'type' => MENU_LOCAL_TASK,
-	//     'file' => 'core.inc.php',
- //      	'file path' => drupal_get_path('module', 'agence_web')
-	// );
-
-	/**
-	 * élement de menu pour configurer agenc_web
-	 */
-	$items['admin/config/system/agence-web'] = array (
-		'title' => t('Agence Web'),
-		'description' => t('Configurez votre agence web'),
-		'page callback' => 'agence_web_config',
-    	'access arguments' => array ('configure agence web')
-	);
+  /**
+   * Declare an array of menu items to load
+   * @var array
+   */
+  $items = array();
 
 
-	/**
-	 * return the array we build above
-	 */
-	return $items;
+  $items['admin/agence-web'] = array(
+    'title' => 'Agence WEB',
+    'description' => 'Manage your web agency: clients, projects, invoices.',
+    'page callback' => 'agence_web_home_page',
+    'access arguments' => array('manage web agency'),
+    'file' => 'core.inc.php',
+    'file path' => drupal_get_path('module', 'agence_web')
+  );
+
+  $items['admin/agence-web/accueil'] = array(
+    'title' => 'accueil',
+    'description' => 'gestion agence web',
+    'page callback' => 'agence_web_home_page',
+    'access arguments' => array('manage agence web clients'),
+    'file' => 'core.inc.php',
+    'file path' => drupal_get_path('module', 'agence_web'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  /**
+   * Element de menu pour créer une section dans la page de configuration de Drupal
+   */
+  $items['admin/config/agence-web'] = array(
+    'title' => 'Agence Web',
+    'description' => 'Configurez votre agence web',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('configure agence web'),
+    'position' => 'left',
+    'weight' => -10,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+
+  $items['admin/config/agence-web/defauts'] = array(
+    'title' => 'Paramètres par défaut.',
+    'description' => 'Paramètres par défaut du module agence web.',
+    'access arguments' => array('configure agence web'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('agence_web_config'),
+  );
+
+
+  /**
+   * return the array we build above
+   */
+  return $items;
 }
 
-
+/**
+ * Fonction de configuration du module.
+ *
+ * @return Array 
+ *
+ * Retourne un tableau contenant un formulaire drupal
+ *
+ * @todo créer le formulaire de configuration drupal
+ */
 function agence_web_config() {
-	$content =  array (
-		'raw_markup' => array (
-			'#type' => 'markup', 
-			'#content' => '<p>web agency configuration file</p>'
-		)
-	);
-	return $content;
+  $content =  array(
+    'raw_markup' => array(
+      '#type' => 'markup', 
+      '#content' => '<h2>Agence WEB</h2><p>Configurer votre agence web.</p>'
+    )
+  );
+  return $content;
 }

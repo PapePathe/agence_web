@@ -415,7 +415,7 @@ function _valeur_existe_dans_la_table($table, $field, $value)
    * On ajoute une notification d'erreur dans le formulaire.
    */ 
   if(count($resultat->fetchAll()) != 0) { 
-    form_set_error($field, "Ce $field existe déjà dans la table.");
+    form_set_error($field, check_plain("Ce $field existe déjà dans la table."));
   }
 
 }

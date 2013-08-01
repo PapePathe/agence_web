@@ -1,164 +1,177 @@
-<?php	
+<?php   
 
+/**
+ * @file
+ * 
+ *  Agence Web
+ *  Fonctions de callback pour l'installation, la mise à jour et la désinstallation. 
+ *
+ * @author
+ *  Papa Pathe SENE
+ *  
+ * @copyright
+ *  Xarala Web Studios
+ * 
+ */
 
 /**
  * Implements hook_schema().
  */
 function agence_web_schema() {
-	
-	$schema = array();
+
+  $schema = array();
 
 
-	/**
-	 * Création de la table type accès
-	 * -------------------------------------------------------------------------------
-	 */
-	$schema['agence_web_protocoles'] = array(
-		'description' => 'Les protocoles d-acces. Exemples ftp, http, ssh',
+  /**
+   * Création de la table protocoles
+   * -------------------------------------------------------------------------------
+   */
+  $schema['agence_web_protocoles'] = array(
+    'description' => 'Les protocoles d-acces. Exemples ftp, http, ssh',
 
-		// definition des champs
-		'fields' => array(
+    // definition des champs
+    'fields' => array(
 
-			'id' => array(
-				'description' => 'La cle primaire.',
-				'type' => 'serial',
-				'unsigned' => TRUE,
-				'not null' => TRUE,
-			),
+      'id' => array(
+        'description' => 'La cle primaire.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
 
-			'libelle' => array(
-				'description' => 'Le libelle du type d-acces.',
-				'type' => 'varchar',
-				'length' => '50',
-				'not null' => TRUE
-			),
-		),
+      'libelle' => array(
+        'description' => 'Le libelle du type d-acces.',
+        'type' => 'varchar',
+        'length' => '50',
+        'not null' => TRUE
+      ),
+    ),
 
-		// definition des clés
-		'primary key' => array('id')
+    // definition des clés
+    'primary key' => array('id')
 
-	);
+  );
 
-	/**
-	 * Crétion de la table codes accès
-	 * -------------------------------------------------------------------------------
-	 */
-	$schema['agence_web_codes'] = array(
-		'description' => 'les codes d-acces pour les services a deployer.',
+  /**
+   * Crétion de la table codes accès
+   * -------------------------------------------------------------------------------
+   */
+  $schema['agence_web_codes'] = array(
+    'description' => 'les codes d-acces pour les services a deployer.',
 
-		// définition des champs
-		'fields' => array (
+    // définition des champs
+    'fields' => array(
 
-			'id' => array ( 
-		        'description' => 'La cle primaire',
-		        'type' => 'serial',
-		        'unsigned' => TRUE,
-		        'not null' => TRUE,
-		    ),
+        'id' => array( 
+          'description' => 'La cle primaire',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
 
-		    'id_protocole' => array ( 
-		        'description' => 'L-identifiant du protocole correspondant.',
-		        'type' => 'int',
-		        'unsigned' => TRUE,
-		        'not null' => TRUE,
-		    ),
+        'id_protocole' => array( 
+          'description' => 'L-identifiant du protocole correspondant.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
 
-		    'id_service' => array ( 
-		        'description' => 'L-identifiant du service correspondant.',
-		        'type' => 'int',
-		        'unsigned' => TRUE,
-		        'not null' => TRUE,
-		    ),
+        'id_service' => array( 
+          'description' => 'L-identifiant du service correspondant.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
 
-		    'libelle' => array ( 
-		        'description' => 'La description du code d-acces.',
-		        'type' => 'varchar',
-		        'length' => '255',
-		        'not null' => TRUE
-		    ),
+        'libelle' => array( 
+          'description' => 'La description du code d-acces.',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
 
-		    'identifiant' => array ( 
-		        'description' => 'l-dientifiant pour le code d-acce',
-		        'type' => 'varchar',
-		        'length' => '255',
-		        'not null' => TRUE
-		    ),
+        'identifiant' => array( 
+          'description' => 'l-dientifiant pour le code d-acce',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
 
-		    'mot_de_passe' => array ( 
-		        'description' => 'le mot de passe pour le code d-acce',
-		        'type' => 'varchar',
-		        'length' => '255',
-		        'not null' => TRUE
-		    ),
+        'mot_de_passe' => array( 
+          'description' => 'le mot de passe pour le code d-acce',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
 
-		    'url' => array ( 
-		        'description' => 'adresse de destination s-il ya lieu du code d-acces.',
-		        'type' => 'varchar',
-		        'length' => '255',
-		        'not null' => FALSE
-		    ),
-		),
+        'url' => array( 
+          'description' => 'adresse de destination s-il ya lieu du code d-acces.',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => FALSE
+        ),
+    ),
 
-		// définition de la clé primare de la table
-		'primary key' => array('id'), 
-		
-		// définition des clés etrangères TODO FIX THIS
-		// 'foreign keys' => array(
+    // définition de la clé primare de la table
+    'primary key' => array('id'), 
+    
+    // définition des clés etrangères TODO FIX THIS
+    // 'foreign keys' => array(
 
-		// 	'codes_fk_id_protocole' => array(
-		// 		'table'   => 'agence_web_protocoles',
-		// 		'columns' => array('id_protocole' => 'id')
-		// 	),
-		// )
+    //  'codes_fk_id_protocole' => array(
+    //      'table'   => 'agence_web_protocoles',
+    //      'columns' => array('id_protocole' => 'id')
+    //  ),
+    // )
 
-	);
+  );
 
-	/**
-	 * Création de la table pack sites
-	 * -------------------------------------------------------------------------------
-	 */
-    $schema['agence_web_packs'] = array (
-	    'description' => 'Les pack sites que notre agence web commercialise.',
+  /**
+   * Création de la table pack sites
+   * -------------------------------------------------------------------------------
+   */
+  $schema['agence_web_packs'] = array(
+      'description' => 'Les pack sites que notre agence web commercialise.',
 
-	    // définition des champs
-	    'fields' => array(
+      // définition des champs
+      'fields' => array(
 
-	      'id' => array( 
-	        'description' => 'La cle primaire',
-	        'type' => 'serial',
-	        'unsigned' => TRUE,
-	        'not null' => TRUE,
-	      ),
+        'id' => array( 
+          'description' => 'La cle primaire',
+          'type' => 'serial',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
 
-	      'titre' => array( 
-	        'description' => 'Le nom du  pack site',
-	        'type' => 'varchar',
-	        'length' => '255',
-	        'not null' => TRUE
-	      ),
+        'titre' => array( 
+          'description' => 'Le nom du  pack site',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE
+        ),
 
-	      'delai_livraison' => array( 
-	        'description' => 'Le delai de livraison du site web.',
-	        'type' => 'int',
-	        'unsigned' => TRUE,
-	        'not null' => TRUE,
-	        'default' => 0
-	      ),
+        'delai_livraison' => array( 
+          'description' => 'Le delai de livraison du site web.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0
+        ),
 
-	      'prix_hors_taxes' => array( 
-	        'description' => 'Le prix hors taxes.',
-	        'type' => 'int',
-	        'unsigned' => TRUE,
-	        'not null' => TRUE,
-	        'default' => 0
-	      ),
+        'prix_hors_taxes' => array( 
+          'description' => 'Le prix hors taxes.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0
+        ),
 
 
-	    ),
+      ),
 
-	    'primary key' => array('id'),
-    );
+      'primary key' => array('id'),
+  );
 
-	return $schema;
+  return $schema;
 
 }
