@@ -8,6 +8,8 @@
  *  
  *  Contient toutes les fonctions permettant d'administrer les clients.
  *
+ * @package AgenceWeb
+ *
  * @author
  *  Papa Pathe SENE <pathe.sene@gmail.com>
  *  
@@ -57,9 +59,9 @@ function agence_web_gestion_clients() {
    * On inclue les critéres de tri renseignés par l'utilisateur sinon les défauts.
    */ 
   $resultat = $requete
-                ->orderByHeader($header)
-                ->limit(15)
-                ->execute();  
+       ->orderByHeader($header)
+       ->limit(15)
+       ->execute();  
 
   $lignes = array();
   
@@ -71,9 +73,9 @@ function agence_web_gestion_clients() {
      *   -- edition
      *   -- suppression
      */ 
-    $ligne->lien_afficher = l( t('afficher'),  'admin/agence-web/clients/'. $ligne->id );
-    $ligne->lien_modifier = l( t('modifier'),  'admin/agence-web/clients/'. $ligne->id .'/modifier' );
-    $ligne->lien_supprimer= l( t('supprimer'), 'admin/agence-web/clients/'. $ligne->id .'/supprimer' );
+    $ligne->lien_afficher = l( t('afficher'),  'admin/agence-web/clients/' . $ligne->id );
+    $ligne->lien_modifier = l( t('modifier'),  'admin/agence-web/clients/' . $ligne->id . '/modifier' );
+    $ligne->lien_supprimer= l( t('supprimer'), 'admin/agence-web/clients/' . $ligne->id . '/supprimer' );
 
     /**
      * On supprime le champ id du résultat et ainsi il n'est pas affiché.
@@ -90,7 +92,7 @@ function agence_web_gestion_clients() {
   /**
    * On crée un tableau de rendu
    */ 
-  $table['pager_table'] = array ( 
+  $table['pager_table'] = array( 
     '#theme'  => 'table',
     '#header' => $header, 
     '#rows'   => $lignes,
@@ -113,8 +115,7 @@ function agence_web_gestion_clients() {
  * 
  */
 function agence_web_clients_a_recouvrer() {
-  $header = array
-  (
+  $header = array(
     t('raison sociale'), 
     t('date échéance'), 
     t('montant restant à recouver'),
@@ -139,7 +140,7 @@ function agence_web_clients_a_recouvrer() {
  * @param  $form_state 
  *   Le formulaire avec les données
  * 
- * @return           
+ * @return  
  *   Un tableau associatif contenant le formulaire, ses attributs et ses champs
  */
 function agence_web_clients_formulaire_creation($form, &$form_state) {
@@ -157,14 +158,14 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
   $form['tabs']['legal'] = array(
     '#type'       => 'fieldset',
     '#title'      => t('Informations légales'),
-    '#required'   => true
+    '#required'   => TRUE
   );
 
   $form['tabs']['legal']['ninea'] = array(
     '#type'        => 'textfield',
     '#title'       => t('ninéa'),
     '#description' => t('le numéro identification national des entreprises et des associations.'),
-    '#required'    => true,
+    '#required'    => TRUE,
     '#default'     => isset($form_state['values']['ninea']) ? $form_state['values']['ninea'] : ''
   );
 
@@ -172,7 +173,7 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#type'        => 'textfield',
     '#title'       => t('numéro de registre de commerce (RC)'),
     '#description' => t('le numéro identification au registre de commerce.'),
-    '#required'    => true
+    '#required'    => TRUE
   );
 
   /**
@@ -187,7 +188,7 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#type'        => 'textfield',
     '#title'       => t('raison sociale'),
     '#description' => t('Quel est la dénomination du client.'),
-    '#required'    => true
+    '#required'    => TRUE
   );
 
 
@@ -195,7 +196,7 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#type'        => 'textfield',
     '#title'       => t('le capital social'),
     '#description' => t('le patrimoine de la société. Distinct de celui des associés.'),
-    '#required'    => false,
+    '#required'    => FALSE,
     '#default_value'     => !empty($form_state['values']['capital_social']) ? $form_state['values']['capital_social'] : 0
   );
 
@@ -203,14 +204,14 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
     '#type'        => 'textarea',
     '#title'       => t('le siège social'),
     '#description' => t('fournir ici une adresse pour le client.'),
-    '#required'    => true
+    '#required'    => TRUE
   );
 
   $form['tabs']['client']['objet_social'] = array(
     '#type'        => 'textarea',
     '#title'       => t('objet social de la société'),
     '#description' => t('lister les services et produits fournis par cette société.'),
-    '#required'    => true
+    '#required'    => TRUE
   );
 
   /**
@@ -219,21 +220,21 @@ function agence_web_clients_formulaire_creation($form, &$form_state) {
   $form['tabs']['contact'] = array(
     '#type'       => 'fieldset',
     '#title'      => t('Informations de contact'),
-    '#required'   => true
+    '#required'   => TRUE
   );
 
   $form['tabs']['contact']['telephone'] = array(
     '#type'        => 'textfield',
     '#title'       => t('le numéro de téléphone'),
     '#description' => t('Le numéro de téléphone offfiel de la société.'),
-    '#required'    => true
+    '#required'    => TRUE
   );
 
   $form['tabs']['contact']['fax'] = array(
     '#type'        => 'textfield',
     '#title'       => t('le numéro de fax'),
     '#description' => t('Le numéro de fax offfiel de la société.'),
-    '#required'    => false
+    '#required'    => FALSE
   );
 
   // ajout des boutons de contrôle
@@ -258,7 +259,7 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
    * Le ninea est compose de 3 à 7 chiffres
    * Il est unique dans la table client
    */
-  if (0 == preg_match('/^\d{3,7}$/', $form_state['values']['ninea'])) {
+  if (0 == preg_match(variable_get('agence_web_clients_motif_ninea'), $form_state['values']['ninea'])) {
     form_set_error('ninea', "Ce ninéa n'est pas valide!");
   }
   
@@ -273,7 +274,7 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
    * Exemple de RC valide
    *   SN DKR 2216 B 9989
    */ 
-  if (0 == preg_match('/^SN DKR \d{4} [A-Z]{1} \d{4}$/', $form_state['values']['rc'])) {
+  if (0 == preg_match(variable_get('agence_web_clients_motif_rc'), $form_state['values']['rc'])) {
     form_set_error('rc', "Ce numéro de RC n'est pas valide!");
   }
 
@@ -308,7 +309,7 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
    * suivi de sept chiffres décimaux sans espaces.
    * 
    */ 
-  if (0 == preg_match('/^(33|70|76|77|78)\d{7}$/', $form_state['values']['telephone'])) {
+  if (0 == preg_match(variable_get('agence_web_clients_motif_telephone'), $form_state['values']['telephone'])) {
     form_set_error('telephone', "Ce numéro de téléphone n'est pas valide!");
   }
 
@@ -324,21 +325,21 @@ function agence_web_clients_formulaire_creation_validate($form, &$form_state) {
  */
 function agence_web_clients_formulaire_creation_submit($form, &$form_state) {	
 
-	db_insert('agence_web_clients')
-	->fields(
+	db_insert('agence_web_clients')->
+  fields(
 	  array(
-	  	'ninea'          => $form_state['values']['ninea'],
-	  	'rc'             => $form_state['values']['rc'],
+	  	'ninea' => $form_state['values']['ninea'],
+	  	'rc'  => $form_state['values']['rc'],
 	  	'raison_sociale' => $form_state['values']['raison_sociale'],
 	  	'capital_social' => isset($form_state['values']['capital_social']) ? $form_state['values']['capital_social'] : 0,
-	  	'siege_social'   => $form_state['values']['siege_social'],
-	  	'objet_social'   => $form_state['values']['objet_social'],
-	  	'telephone'      => $form_state['values']['telephone'   ],
+	  	'siege_social' => $form_state['values']['siege_social'],
+	  	'objet_social' => $form_state['values']['objet_social'],
+	  	'telephone'    => $form_state['values']['telephone'   ],
 	  	// 'courriel'       => $form_state['values']['courriel'],
-	  	'fax'            => $form_state['values']['fax']
+	  	'fax'   => $form_state['values']['fax']
 	  )
-	)
-	->execute();
+	)->
+  execute();
 
 	$form_state['redirect'] = 'admin/agence-web/clients';
 
@@ -360,20 +361,62 @@ function agence_web_clients_formulaire_creation_submit($form, &$form_state) {
  */
 function agence_web_clients_formulaire_configuration() {
 
+  /**
+   * Champ texte pour configurer le capital social minimum
+   */
   $form['agence_web_clients_capital_social_minimum'] = array(    
-    '#type'           => 'textfield',
-    '#title'          => t('le capital social minimum. '),
+    '#type'  => 'textfield',
+    '#title' => t('le capital social minimum.'),
     '#description'    => t("Le capital social minimum pour une société de capitaux ou une société d'actions."),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#default_value'  => variable_get('agence_web_clients_capital_social_minimum', 1000000)
   );
+
+  $form['tabs']['contact'] = array(
+    '#type'       => 'fieldset',
+    '#title'      => t('Paramètres de validation'),
+    '#required'   => TRUE
+  );
+
+  /**
+   * Champ texte pour configurer le motif des numéros de téléphone des sociétés
+   */
+  $form['tabs']['contact']['agence_web_clients_motif_telephone'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('le motif à utiliser pour valider les numéros de téléphone.'),
+    '#description'    => t("Le motif à utiliser pour valider les numéros de téléphone.[Ne changer que si vous êtes expert]"),
+    '#required'       => TRUE,
+    '#default_value'  => variable_get('agence_web_clients_motif_telephone', '/^(33|70|76|77|78)\d{7}$/')
+  );
+
+  /**
+   * Champ texte pour configurer le motif du ninea
+   */
+  $form['tabs']['contact']['agence_web_clients_motif_ninea'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('le motif à utiliser pour valider le ninea.'),
+    '#description'    => t("Le motif à utiliser pour valider les numéros d'identification national des entreprises et des associations.[Ne changer que si vous êtes expert]"),
+    '#required'       => TRUE,
+    '#default_value'  => variable_get('agence_web_clients_motif_ninea', '/^\d{3,7}$/')
+  );
+
+    /**
+   * Champ texte pour configurer le motif du ninea
+   */
+  $form['tabs']['contact']['agence_web_clients_motif_rc'] = array(
+    '#type'  => 'textfield',
+    '#title' => t('le motif à utiliser pour valider le rc.'),
+    '#description'    => t("Le motif à utiliser pour valider les numéros de registre de commerce.[Ne changer que si vous êtes expert]"),
+    '#required'       => TRUE,
+    '#default_value'  => variable_get('agence_web_clients_motif_rc', '/^SN DKR \d{4} [A-Z]{1} \d{4}$/')
+  );
+
 
   return system_settings_form($form);
 
 }
 
-function agence_web_details_client($id_client = null)
-{
+function agence_web_details_client($id_client = null) {
   
   $content = array();
 
@@ -407,14 +450,14 @@ function _valeur_existe_dans_la_table($table, $field, $value)
   $requete  = db_select($table, 'c');
 
   $resultat = $requete
-                ->fields('c', array($field))
-                ->condition("c.$field", $value)
-                ->execute();
+       ->fields('c', array($field))
+       ->condition("c.$field", $value)
+       ->execute();
   /**
    * Si le nombre de lignes retourné par la requête est différent de zéro
    * On ajoute une notification d'erreur dans le formulaire.
    */ 
-  if(count($resultat->fetchAll()) != 0) { 
+  if (count($resultat->fetchAll()) != 0) { 
     form_set_error($field, check_plain("Ce $field existe déjà dans la table."));
   }
 

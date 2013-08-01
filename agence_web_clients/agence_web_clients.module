@@ -9,6 +9,8 @@ include 'agence_web_clients.permissions';
  *  Agence Web
  *  Fichier principal du module
  *
+ * @package AgenceWeb
+ *
  * @author
  *  Papa Pathe SENE
  *  
@@ -25,7 +27,7 @@ function agence_web_clients_menu() {
   
   $items = array();
 
-  $items['admin/agence-web/clients'] = array (
+  $items['admin/agence-web/clients'] = array(
     'title'            => t('Clients'),
     'description'      => t('gestion des clients'),
     'page callback'    => 'agence_web_gestion_clients',
@@ -34,7 +36,17 @@ function agence_web_clients_menu() {
     'file path'        => drupal_get_path('module', 'agence_web_clients'),
   );
 
-  $items['admin/agence-web/clients/%client'] = array (
+  $items['admin/agence-web/clients/gerer'] = array(
+    'title'            => t('Clients'),
+    'description'      => t('gestion des clients'),
+    'page callback'    => 'agence_web_gestion_clients',
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_GERER),
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['admin/agence-web/clients/%client'] = array(
     'title'            => t('Détails du client'),
     'description'      => t('affichage détaillé des clients'),
     'page callback'    => 'agence_web_details_client',
@@ -44,38 +56,42 @@ function agence_web_clients_menu() {
     'file path'        => drupal_get_path('module', 'agence_web_clients'),
   );
 
-  $items['admin/agence-web/clients/nouveau'] = array (
+  $items['admin/agence-web/clients/nouveau'] = array(
     'title'            => t('NOUVEAU CLIENT'),
     'description'      => t('Créer un client'),
     'page callback'    => 'drupal_get_form',
     'page arguments'   => array('agence_web_clients_formulaire_creation'),
     'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_CREER_CLIENT),
-    'type'             => MENU_LOCAL_ACTION,
+    'type'             => MENU_LOCAL_TASK | MENU_LOCAL_ACTION,
     'file'             => 'agence_web_clients.admin.inc',
     'file path'        => drupal_get_path('module', 'agence_web_clients')
   );
 
-  $items['admin/agence-web/clients/clients-a-recouvrer'] = array (
+  $items['admin/agence-web/clients/clients-a-recouvrer'] = array(
     'title'            => t('CLIENTS A RECOUVRER'),
     'description'      => t('Voir les clients à recouvrer'),
     'page callback'    => 'agence_web_clients_a_recouvrer',
     'access arguments' => array ('view clients to bill'),
-    'type'             => MENU_LOCAL_ACTION,
+    'type'             => MENU_LOCAL_TASK,
     'file'             => 'agence_web_clients.admin.inc',
     'file path'        => drupal_get_path('module', 'agence_web_clients')
   );
 
+  // Configuration
+  // ----------------------------------------------------------------------------------------
+
   /**
-   * élement de menu pour configurer le module agence_web_clients
+   * menu pour configurer le module agence_web_clients
    */
-  $items['admin/config/system/agence-web-clients'] = array (
-    'title'            => t('Clients Agence Web'),
+  $items['admin/config/agence-web/clients'] = array(
+    'title'            => t('Clients'),
     'description'      => t('Configurez les clients de votre agence web'),
     'page callback'    => 'drupal_get_form',
     'page arguments'   => array('agence_web_clients_formulaire_configuration'),
     'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_CONFIGURER),
     'file'             => 'agence_web_clients.admin.inc',
-    'file path'        => drupal_get_path('module', 'agence_web_clients')
+    'file path'        => drupal_get_path('module', 'agence_web_clients'),
+    'weight'           => '-12'
   );
 
   return $items;

@@ -1,6 +1,23 @@
 <?php   
 
 /**
+ * @file
+ * 
+ *  Agence Web
+ *  Fichier principal du module pour la gestion des clients
+ *
+ * @package AgenceWeb
+ *
+ * @author
+ *  Papa Pathe SENE
+ *  
+ * @copyright
+ *  Xarala Web Studios
+ * 
+ */
+
+
+/**
  * Implements hook_schema().
  */
 function agence_web_clients_schema() {
@@ -11,7 +28,7 @@ function agence_web_clients_schema() {
    * Création de la table clients
    * -------------------------------------------------------------------------------
    */
-  $schema['agence_web_clients'] = array (
+  $schema['agence_web_clients'] = array(
       'description' => 'Les clients de notre agence web.',
 
       /** 
