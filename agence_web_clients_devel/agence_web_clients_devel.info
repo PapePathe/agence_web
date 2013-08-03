@@ -1,6 +1,6 @@
 core    = 7.x
 name    = Agence WEB Clients Development
-package = Xarala
+package = Development
 
 files[] = agence_web_cients_devel.info
 files[] = agence_web_cients_devel.module
