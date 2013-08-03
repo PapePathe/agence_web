@@ -416,13 +416,25 @@ function agence_web_clients_formulaire_configuration() {
 
 }
 
+
+/**
+ * Affiche les détails du client
+ *
+ * @param integer $id_client
+ *  un entier qui représente  l'identifiant d'une ligne dans la
+ *  table agence_web_clients
+ *
+ * @return
+ *  un tableau associant avec le contenu de la page
+ *
+ */
 function agence_web_details_client($id_client) {
   
   $content = array();
 
   $requete = db_select('agence_web_clients', 'c')
               ->fields('c', array('raison_sociale', 'ninea', 'rc', 'id'))
-              ->condition('c.id', 1);  
+              ->condition('c.id', $id_client);  
 
   $client  = $requete->execute()->fetchObject();
 
@@ -437,6 +449,51 @@ function agence_web_details_client($id_client) {
   return $content;
 }
 
+/**
+ * Permet de supprimer un client de la base
+ *
+ *
+ *
+ *
+ */
+function agence_web_supprimer_client($id_client)
+{
+
+  // on vérifie si un client avec comme id $id_client existe
+
+  $client_request = db_select('agence_web_clients', 'c')
+                    ->fields('c', array('id'))
+                    ->condition('c.id', $id_client);
+
+  $client_result = $client_request->execute()->fetchObject();
+
+  if ($client_result) { // si ce client est présent dans la base de données
+    // construction et exécution de la requête de suppression
+    db_delete('agence_web_clients')
+      ->condition('id', $id_client)
+      ->execute();
+
+
+    // affichage d'un message de succès
+    drupal_set_message(t("un client vient d'être supprimé de la base de données."), 'status', FALSE);
+
+    // redirection vers la  page de gestion des clients
+    drupal_goto('admin/agence-web/clients', array());  
+  }
+  else { // sinon
+
+    // affichage d'un message d'erreur
+    drupal_set_message(t("le client avec l'identidiant {$id_client} n'existe pas."), 'error', FALSE);
+
+    // redirection vers la  page de gestion des clients
+    drupal_goto('admin/agence-web/clients', array());  
+  }
+
+
+
+
+
+}
 
 /**
  * Cette fonction vérifie une contrainte d'unicité dans la table

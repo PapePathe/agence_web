@@ -70,7 +70,7 @@ function agence_web_clients_menu() {
   $items['admin/agence-web/clients/%/modifier'] = array(
     'title'            => t('modifier'),
     'description'      => t('modifier ce client'),
-    'page callback'    => 'agence_web_details_client',
+    'page callback'    => 'agence_web_modifier_client',
     'page arguments'   => array(3),
     'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT),
     'file'             => 'agence_web_clients.admin.inc',
@@ -78,10 +78,21 @@ function agence_web_clients_menu() {
     'type'             => MENU_LOCAL_TASK,
   );
 
+  $items['admin/agence-web/clients/%/supprimer'] = array(
+    'title'            => t('supprimer'),
+    'description'      => t('supprimer ce client'),
+    'page callback'    => 'agence_web_supprimer_client',
+    'page arguments'   => array(3),
+    'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_SUPPRIMER_CLIENT),
+    'file'             => 'agence_web_clients.admin.inc',
+    'file path'        => drupal_get_path('module', 'agence_web_clients'),
+    'type'             => MENU_CALLBACK,
+  );  
+
   $items['admin/agence-web/clients/%/projets'] = array(
     'title'            => t('projets'),
     'description'      => t('afficher les projets soumis par ce client'),
-    'page callback'    => 'agence_web_details_client',
+    'page callback'    => 'agence_web_projets_client',
     'page arguments'   => array(3),
     'access arguments' => array (AGENCE_WEB_CLIENTS_PERMISSION_DE_VISUALISER_CLIENT),
     'file'             => 'agence_web_clients.admin.inc',
@@ -165,8 +176,6 @@ function agence_web_clients_permission() {
 
   );
 }
-
-
 
 
 
