@@ -491,7 +491,14 @@ function agence_web_supprimer_client($id_client)
 
 }
 
-
+/**
+ * Permet de modifier un client 
+ *
+ *
+ * @param integer $id_client
+ *  un entier qui représente  l'identifiant d'une ligne dans la table agence_web_clients
+ *
+ */
 function agence_web_modifier_client($id_client)
 {
   $content['raw_markup'] = array(
@@ -502,6 +509,16 @@ function agence_web_modifier_client($id_client)
   return $content;
 }
 
+/**
+ * Permet d'afficher les projets en cours
+ * 
+ * Cette page permet de gerer les projets éxecutés et en cours
+ * pour un client donné.
+ *
+ * @param integer $id_client
+ *  un entier qui représente  l'identifiant d'une ligne dans la table agence_web_clients
+ *
+ */
 function agence_web_projets_client($id_client)
 {
   $content['raw_markup'] = array(
