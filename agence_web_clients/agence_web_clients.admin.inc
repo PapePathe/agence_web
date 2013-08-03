@@ -421,8 +421,7 @@ function agence_web_clients_formulaire_configuration() {
  * Affiche les détails du client
  *
  * @param integer $id_client
- *  un entier qui représente  l'identifiant d'une ligne dans la
- *  table agence_web_clients
+ *  un entier qui représente  l'identifiant d'une ligne dans la table agence_web_clients
  *
  * @return
  *  un tableau associant avec le contenu de la page
@@ -453,7 +452,8 @@ function agence_web_details_client($id_client) {
  * Permet de supprimer un client de la base
  *
  *
- *
+ * @param integer $id_client
+ *  un entier qui représente  l'identifiant d'une ligne dans la table agence_web_clients
  *
  */
 function agence_web_supprimer_client($id_client)
@@ -489,10 +489,27 @@ function agence_web_supprimer_client($id_client)
     drupal_goto('admin/agence-web/clients', array());  
   }
 
+}
 
 
+function agence_web_modifier_client($id_client)
+{
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => 'TODO: modifier le client.'
+  );
 
+  return $content;
+}
 
+function agence_web_projets_client($id_client)
+{
+  $content['raw_markup'] = array(
+    '#type' => 'markup',
+    '#markup' => 'TODO: afficher les projets réalisés ou en cours pour ce client.'
+  );
+
+  return $content;
 }
 
 /**
